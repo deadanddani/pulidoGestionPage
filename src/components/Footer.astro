@@ -1,0 +1,62 @@
+---
+import { nav } from '../data/nav';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+import SubsidyNotice from './SubsidyNotice.astro';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <img src={url('img/logo.png')} alt="" width="225" height="243" class="site-footer__logo" />
+      <img src={url('img/sello-colegiado.png')} alt="Administrador de Fincas Colegiado" width="179" height="56" class="site-footer__seal" />
+    </div>
+    <address>
+      <strong>{site.legalName}</strong><br />
+      {site.address.street}<br />
+      {site.address.postalCode} {site.address.city} ({site.address.region})<br />
+      <a href={`mailto:${site.email}`}>{site.email}</a><br />
+      CIF {site.cif}
+    </address>
+    <nav aria-label="Pie de página">
+      <ul>
+        <li><a href={url('')}>Inicio</a></li>
+        {nav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="site-footer__social">
+      <a href={site.social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src={url('img/social/linkedin.svg')} alt="" width="24" height="24" />
+      </a>
+      <a href={site.social.youtube} target="_blank" rel="noopener" aria-label="YouTube">
+        <img src={url('img/social/youtube.svg')} alt="" width="24" height="24" />
+      </a>
+    </div>
+  </div>
+  <div class="container">
+    <SubsidyNotice />
+  </div>
+  <div class="container site-footer__legal">
+    <span>© {site.legalName} {year}</span>
+    <a href={url('privacidad/')}>Política de Protección de Datos y Privacidad</a>
+    <a href={url('cookies/')}>Política de Cookies</a>
+    <button type="button" class="site-footer__cookies" data-cookie-settings>Preferencias de cookies</button>
+  </div>
+</footer>
+
+<style>
+  .site-footer { margin-top: var(--space-8); background: #0f1d3a; color: #d8e0f0; padding-block: var(--space-7) var(--space-5); }
+  .site-footer a, .site-footer__cookies { color: #fff; }
+  .site-footer__grid { display: grid; gap: var(--space-6); margin-bottom: var(--space-6); }
+  .site-footer__logo { height: 72px; width: auto; background: #fff; border-radius: var(--radius-sm); padding: var(--space-2); }
+  .site-footer__seal { height: 48px; width: auto; margin-top: var(--space-3); background: #fff; border-radius: var(--radius-sm); padding: var(--space-2); }
+  address { font-style: normal; }
+  .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .site-footer__social { display: flex; gap: var(--space-3); }
+  .site-footer__social a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgb(255 255 255 / 10%); }
+  .site-footer__social img { filter: invert(1); }
+  .site-footer__legal { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); margin-top: var(--space-5); font-size: var(--text-sm); }
+  .site-footer__cookies { background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
+  @media (min-width: 640px) { .site-footer__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .site-footer__grid { grid-template-columns: 1.2fr 1.5fr 1fr auto; } }
+</style>

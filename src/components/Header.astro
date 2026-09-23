@@ -1,0 +1,84 @@
+---
+import { nav } from '../data/nav';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props { current?: string }
+const { current } = Astro.props;
+---
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href={url('')}>
+      <img src={url('img/logo.png')} alt={site.legalName} width="225" height="243" />
+    </a>
+    <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="site-nav__bars" aria-hidden="true"></span>
+      <span class="visually-hidden">Menú</span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Principal">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a
+              href={url(item.href)}
+              aria-current={current === item.href ? 'page' : undefined}
+              class={item.href === 'presupuesto/' ? 'btn btn--primary' : undefined}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.site-nav__toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 20; }
+  .site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 72px; flex-wrap: wrap; }
+  .site-header__brand img { height: 56px; width: auto; }
+  .site-nav__toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+    background: transparent; cursor: pointer;
+  }
+  .site-nav__bars, .site-nav__bars::before, .site-nav__bars::after {
+    display: block; width: 22px; height: 2px; background: var(--color-text); position: relative; content: '';
+  }
+  .site-nav__bars::before { position: absolute; top: -7px; }
+  .site-nav__bars::after { position: absolute; top: 7px; }
+  .site-nav { display: none; flex-basis: 100%; padding-bottom: var(--space-4); }
+  .site-nav.is-open { display: block; }
+  .site-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+  .site-nav a:not(.btn) {
+    display: flex; align-items: center; min-height: 44px; padding-inline: var(--space-3);
+    color: var(--color-text); text-decoration: none; border-radius: var(--radius-sm); font-weight: 600;
+  }
+  .site-nav a:not(.btn):hover, .site-nav a[aria-current='page'] { color: var(--color-primary); background: var(--color-surface-alt); }
+  .site-nav .btn { width: 100%; margin-top: var(--space-2); }
+
+  @media (min-width: 960px) {
+    .site-header__inner { flex-wrap: nowrap; min-height: 88px; }
+    .site-header__brand img { height: 68px; }
+    .site-nav__toggle { display: none; }
+    .site-nav, .site-nav.is-open { display: block; flex-basis: auto; padding: 0; }
+    .site-nav ul { display: flex; align-items: center; gap: var(--space-2); }
+    .site-nav .btn { width: auto; margin: 0 0 0 var(--space-2); }
+  }
+</style>

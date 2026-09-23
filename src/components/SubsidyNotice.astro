@@ -1,0 +1,23 @@
+---
+import { subsidy } from '../data/subsidy';
+import { url } from '../lib/url';
+---
+<section class="subsidy" aria-label="Financiación pública">
+  <img src={url(subsidy.image)} alt={subsidy.alt} width="480" height="292" loading="lazy" />
+  <div class="subsidy__text">
+    {subsidy.lines.map((line) => <p>{line}</p>)}
+  </div>
+</section>
+
+<style>
+  .subsidy {
+    display: grid; gap: var(--space-4); align-items: center;
+    padding: var(--space-5); background: #fff; color: var(--color-text);
+    border-radius: var(--radius); border: 1px solid var(--color-border);
+  }
+  .subsidy img { width: 100%; max-width: 420px; margin-inline: auto; }
+  .subsidy__text p { margin: 0 0 var(--space-2); font-size: var(--text-sm); color: var(--color-muted); }
+  @media (min-width: 960px) {
+    .subsidy { grid-template-columns: minmax(0, 420px) 1fr; }
+  }
+</style>
