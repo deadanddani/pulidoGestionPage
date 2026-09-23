@@ -1,6 +1,6 @@
 # Rediseño web Pulido Gestión — Proof of Concept
 
-**Fecha:** 2026-09-23 · **Rama:** `feature/redesign-poc` · **Estado:** diseño aprobado
+**Fecha:** 2026-09-23 · **Rama:** `feature/redesign-poc` · **Estado:** spec aprobada
 
 ## 1. Objetivo
 
@@ -124,6 +124,18 @@ Dirección: **profesional cercano**.
 - Accesibilidad: HTML semántico, `alt` en imágenes, foco visible, navegación por teclado del menú móvil,
   `prefers-reduced-motion`.
 
+### 6.1 Responsive (requisito crítico)
+
+- Mobile-first: estilos base para móvil, ampliación con `min-width` en breakpoints `640px`, `960px`, `1200px`.
+- Sin scroll horizontal en ningún ancho ≥ 320px.
+- Header: menú hamburguesa accesible por debajo de 960px; navegación completa por encima.
+- Rejillas con CSS Grid `auto-fit/minmax`: equipo y vídeos 1 columna (móvil) → 2 → 3.
+- Hero: una columna en móvil (texto, CTAs, vídeo apilados); dos columnas en escritorio.
+- Formulario: campos a ancho completo en móvil; pares de campos en 2 columnas desde 640px; objetivos táctiles ≥ 44px.
+- Footer y bloque de subvención apilados en móvil; logos escalan con `max-width: 100%`.
+- Imágenes y vídeos con `aspect-ratio` y `max-width: 100%`; tipografía fluida con `clamp()`.
+- Verificación visual obligatoria en 375px, 768px y 1440px de todas las páginas.
+
 ## 7. Pendientes documentados (`docs/pendientes.md`)
 
 - **Formulario real:** opciones Formspree / Web3Forms / Netlify Forms / función serverless; el componente expone un
@@ -145,5 +157,5 @@ Dirección: **profesional cercano**.
 
 - `astro check` y `astro build` sin errores (local y en CI).
 - Comprobación de enlaces internos del build y de las redirecciones `.html`.
-- Revisión visual en escritorio y móvil (capturas) antes de dar por terminado.
+- Revisión visual (capturas) en 375px, 768px y 1440px de todas las páginas, sin scroll horizontal.
 - Validación manual del formulario (campos obligatorios, email, checkbox).
