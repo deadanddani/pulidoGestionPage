@@ -1,6 +1,93 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import { featuredVideo } from '../data/videos';
+import { nav } from '../data/nav';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+const shortcutText: Record<string, string> = {
+  'equipo/': 'Conozca a las personas que gestionan su comunidad.',
+  'multimedia/': 'Ponencias, entrevistas y propuestas en vídeo.',
+  'contacto/': `${site.address.street}, ${site.address.city}.`,
+  'presupuesto/': 'Envíenos los datos de su finca.',
+};
 ---
 <BaseLayout title="Pulido Gestión. Administración de Fincas. Gestoría.">
-  <section class="section container"><h1>Pulido Gestión</h1></section>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">Administrador de Fincas Colegiado · {site.address.city}</p>
+        <h1>Administración de Fincas y Gestoría</h1>
+        <p class="hero__lead">{site.description}</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href={url('presupuesto/')}>Solicitar presupuesto</a>
+          <a class="btn btn--ghost" href={site.portalUrl} target="_blank" rel="noopener">Acceso a gestiones en su comunidad ↗</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <h2 class="hero__video-title">Por qué trabajar con nosotros</h2>
+        <VideoEmbed video={featuredVideo} eager />
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2 class="section__title">¿En qué podemos ayudarle?</h2>
+    <ul class="shortcuts grid-cards">
+      {nav.map((item) => (
+        <li>
+          <a href={url(item.href)}>
+            <strong>{item.label}</strong>
+            <span>{shortcutText[item.href]}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container social">
+      <h2>Visítenos en</h2>
+      <div class="social__links">
+        <a class="btn btn--ghost" href={site.social.linkedin} target="_blank" rel="noopener">
+          <img src={url('img/social/linkedin.svg')} alt="" width="20" height="20" /> LinkedIn
+        </a>
+        <a class="btn btn--ghost" href={site.social.youtube} target="_blank" rel="noopener">
+          <img src={url('img/social/youtube.svg')} alt="" width="20" height="20" /> YouTube
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .hero { padding-block: var(--space-7) var(--space-8); background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%); }
+  .hero__grid { display: grid; gap: var(--space-7); align-items: center; }
+  .hero__eyebrow { color: var(--color-primary); font-weight: 600; font-size: var(--text-sm); letter-spacing: .04em; text-transform: uppercase; }
+  .hero__lead { font-size: var(--text-lg); color: var(--color-muted); max-width: 48ch; }
+  .hero__actions { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+  .hero__video-title { font-size: var(--text-lg); margin-bottom: var(--space-3); }
+  .hero__media :global(figcaption) { display: none; }
+
+  .shortcuts { list-style: none; margin: 0; padding: 0; }
+  .shortcuts a {
+    display: flex; flex-direction: column; gap: var(--space-2); height: 100%;
+    padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius); text-decoration: none; color: var(--color-text); transition: border-color .2s, box-shadow .2s;
+  }
+  .shortcuts a:hover { border-color: var(--color-primary); box-shadow: var(--shadow); }
+  .shortcuts strong { font-family: var(--font-serif); font-size: var(--text-lg); color: var(--color-primary); }
+  .shortcuts span { color: var(--color-muted); }
+
+  .social { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); text-align: center; }
+  .social h2 { margin: 0; }
+  .social__links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+
+  @media (min-width: 640px) {
+    .hero__actions { flex-direction: row; flex-wrap: wrap; }
+  }
+  @media (min-width: 960px) {
+    .hero__grid { grid-template-columns: 1.1fr 1fr; }
+  }
+</style>
