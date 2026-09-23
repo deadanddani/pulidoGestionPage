@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+---
+<BaseLayout title="Dónde Estamos" current="contacto/">
+  <section class="section container">
+    <h1 class="section__title">Dónde estamos</h1>
+    <div class="location">
+      <a class="location__map" href={site.mapsUrl} target="_blank" rel="noopener external">
+        <img src={url('img/mapa.png')} alt={`Mapa de ubicación: ${site.address.street}, ${site.address.city}`} width="778" height="442" />
+        <span class="location__hint">Abrir en Google Maps ↗</span>
+      </a>
+      <address class="location__card">
+        <h2>{site.legalName}</h2>
+        <p>{site.address.street}<br />{site.address.postalCode} {site.address.city}<br />({site.address.region})</p>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <a class="btn btn--primary" href={site.mapsUrl} target="_blank" rel="noopener external">Cómo llegar</a>
+      </address>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .location { display: grid; gap: var(--space-5); }
+  .location__map { position: relative; display: block; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .location__map img { width: 100%; }
+  .location__hint { position: absolute; right: var(--space-3); bottom: var(--space-3); background: #fff; padding: var(--space-2) var(--space-3); border-radius: 999px; font-weight: 600; font-size: var(--text-sm); }
+  .location__card { font-style: normal; background: var(--color-surface); border-radius: var(--radius); padding: var(--space-6); box-shadow: var(--shadow); }
+  @media (min-width: 960px) { .location { grid-template-columns: 1.6fr 1fr; align-items: center; } }
+</style>

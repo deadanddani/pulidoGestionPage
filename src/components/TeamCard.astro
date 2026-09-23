@@ -1,0 +1,17 @@
+---
+import type { TeamMember } from '../data/team';
+import { url } from '../lib/url';
+
+interface Props { member: TeamMember }
+const { member } = Astro.props;
+---
+<article class="team-card">
+  <img src={url(member.photo)} alt={`Fotografía de ${member.name}`} width="450" height="461" loading="lazy" />
+  <h2>{member.name}</h2>
+</article>
+
+<style>
+  .team-card { background: var(--color-surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); text-align: center; }
+  .team-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+  .team-card h2 { font-size: var(--text-lg); padding: var(--space-4); margin: 0; }
+</style>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TeamCard from '../components/TeamCard.astro';
+import { team } from '../data/team';
+---
+<BaseLayout title="Nuestro Equipo" current="equipo/">
+  <section class="section container">
+    <h1 class="section__title">Nuestro Equipo</h1>
+    <div class="grid-cards">
+      {team.map((member) => <TeamCard member={member} />)}
+    </div>
+  </section>
+</BaseLayout>
