@@ -2275,10 +2275,12 @@ git commit -m "ci: add CI and GitHub Pages workflows; docs: add project document
 ```bash
 git push -u origin main
 git push -u origin feature/redesign-poc
+# Decisión del usuario (2026-09-23): repo público para usar GitHub Pages gratis.
+gh repo edit deadanddani/pulidoGestionPage --visibility public --accept-visibility-change-consequences
 gh api -X POST repos/deadanddani/pulidoGestionPage/pages -f build_type=workflow
 gh api -X POST repos/deadanddani/pulidoGestionPage/environments/github-pages/deployment-branch-policies -f name=feature/redesign-poc
 ```
 
-Si la creación de Pages falla por repositorio privado sin plan compatible, **no** cambiar la visibilidad del repo: parar e informar al usuario con las opciones (hacer público el repo, o desplegar en Netlify/Cloudflare Pages con `base: '/'`).
+Si la creación de Pages falla, parar e informar al usuario con el error.
 
 Si Pages se crea: relanzar el deploy (`gh workflow run deploy.yml --ref feature/redesign-poc`), esperar (`gh run watch`) y comprobar que `https://deadanddani.github.io/pulidoGestionPage/` responde 200 (`curl -sI`). Comprobar que el workflow CI pasa en la rama (`gh run list --branch feature/redesign-poc`).
