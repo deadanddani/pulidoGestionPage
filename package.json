@@ -1,0 +1,33 @@
+{
+  "name": "pulido-gestion-web",
+  "scripts": {
+    "test": "vitest run",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test:e2e": "playwright test",
+    "brand": "node scripts/crop-brand.mjs",
+    "legal": "node scripts/import-legal.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deadanddani/pulidoGestionPage.git"
+  },
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@fontsource-variable/source-sans-3": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.0",
+    "astro": "^7.3.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.2",
+    "node-html-parser": "^9.0.4",
+    "sharp": "^0.35.4",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.1"
+  }
+}

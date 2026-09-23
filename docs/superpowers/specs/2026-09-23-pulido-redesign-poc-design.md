@@ -92,7 +92,7 @@ docs/                          # documentación del proyecto
   de negocio en duro.
 - Un componente = una responsabilidad; props tipadas.
 - Rutas limpias (`/equipo/`…) y **redirecciones** desde las URLs antiguas (`index.html`, `equipo.html`, `multimedia.html`,
-  `contacto.html`, `peticion_oferta.html`, `privacidad.html`, `politica_cookies.html`) vía `redirects` de Astro, para
+  `contacto.html`, `peticion_oferta.html`, `privacidad.html`, `politica_cookies.html`) vía ficheros estáticos en `public/` con meta-refresh relativo, para
   preservar enlaces y SEO.
 
 ## 5. Páginas
@@ -117,8 +117,8 @@ Dirección: **profesional cercano**.
   Fincas Colegiado" recortado aparte y mostrado en header/footer.
 - Paleta: azul marca `#0055FF` (primario), azul claro del trazo (secundario), fondo claro cálido, texto gris muy oscuro.
   Contraste AA verificado.
-- Tipografía: serif elegante para titulares, sans-serif legible para texto (Google Fonts, `font-display: swap`,
-  con fallbacks del sistema).
+- Tipografía: serif elegante para titulares, sans-serif legible para texto (autoalojadas con @fontsource-variable: Source Serif 4 y
+  Source Sans 3, con fallbacks del sistema).
 - Footer común con datos de empresa, legales, redes y `SubsidyNotice` (logos recortados de la cabecera original + texto
   del expediente).
 - Accesibilidad: HTML semántico, `alt` en imágenes, foco visible, navegación por teclado del menú móvil,
