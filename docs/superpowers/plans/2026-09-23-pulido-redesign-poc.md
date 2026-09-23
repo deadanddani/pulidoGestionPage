@@ -1963,8 +1963,12 @@ git commit -m "feat: add legal pages imported from current site and cookie conse
 ```ts
 import { expect, test } from '@playwright/test';
 
+test('legacy index.html serves the home page', async ({ page }) => {
+  await page.goto('index.html');
+  await expect(page).toHaveTitle('Pulido Gestión. Administración de Fincas. Gestoría.');
+});
+
 const legacy: [string, string][] = [
-  ['index.html', ''],
   ['equipo.html', 'equipo/'],
   ['multimedia.html', 'multimedia/'],
   ['contacto.html', 'contacto/'],
