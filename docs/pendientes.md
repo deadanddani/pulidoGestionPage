@@ -36,4 +36,3 @@ Hoy el formulario solo valida en el navegador y muestra un aviso de demostració
 - `deploy.yml` no ejecuta los tests antes de publicar y ambas ramas publican en el mismo sitio.
 - Las redirecciones de URLs antiguas no conservan la query string (`?utm_…`).
 - Las miniaturas de vídeo se cargan desde `i.ytimg.com` antes del consentimiento (sin cookies); autoalojarlas sería más estricto.
-- Al pasar a dominio propio: poner `indexable: true` en `src/data/site.ts`.
