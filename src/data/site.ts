@@ -16,6 +16,8 @@ export const site = {
     'https://www.google.com/maps/place/Calle+Linares,+2,+28804+Alcal%C3%A1+de+Henares,+Madrid/@40.4876032,-3.3471094,18z',
   portalUrl: 'https://portalpropietarios.es/',
   analyticsId: 'G-VEZ300TBPB',
+  /** false mientras sea una demo en github.io: evita competir en Google con pulidogestion.com. */
+  indexable: false,
   social: {
     linkedin: 'https://www.linkedin.com/in/ricardopulidosimon/detail/recent-activity/',
     youtube: 'https://www.youtube.com/channel/UCqdHdQcbg-mp7n_whZ2N9GA',

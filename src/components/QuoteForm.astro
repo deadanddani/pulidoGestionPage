@@ -50,10 +50,12 @@ const counts: Field[] = [
     <p class="field__error" id="privacidad-error"></p>
   </div>
   <div class="quote-form__actions">
-    <button type="submit" class="btn btn--primary">Enviar</button>
+    <!-- Deshabilitado hasta que carga el script: sin JS el formulario enviaría los datos en la URL (GET). -->
+    <button type="submit" class="btn btn--primary" disabled>Enviar</button>
     <button type="reset" class="btn btn--ghost">Borrar formulario</button>
   </div>
   <div class="form-status" role="status" aria-live="polite"></div>
+  <p class="form-noscript" data-noscript>Para enviar el formulario es necesario activar JavaScript en su navegador.</p>
 </form>
 
 <script>
@@ -61,6 +63,9 @@ const counts: Field[] = [
 
   const form = document.getElementById('quote-form') as HTMLFormElement | null;
   const status = form?.querySelector<HTMLElement>('.form-status');
+  form?.querySelector<HTMLButtonElement>('button[type="submit"]')?.removeAttribute('disabled');
+  form?.querySelector('[data-noscript]')?.remove();
+
   const FIELDS: QuoteField[] = ['nombre', 'direccion', 'codigoPostal', 'telefono', 'email', 'viviendas', 'locales', 'naves', 'garajes', 'privacidad'];
 
   function clearErrors() {
@@ -129,6 +134,8 @@ const counts: Field[] = [
   .quote-form__actions { display: flex; flex-direction: column; gap: var(--space-3); }
   .form-status:empty { display: none; }
   .form-status { margin-top: var(--space-4); padding: var(--space-4); border-radius: var(--radius-sm); }
+  .form-noscript { margin: var(--space-4) 0 0; color: var(--color-danger); font-weight: 600; }
+  .quote-form button:disabled { opacity: .5; cursor: not-allowed; }
   .form-status--ok { background: #e8f6ef; color: var(--color-success); font-weight: 600; }
   @media (min-width: 640px) {
     .quote-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

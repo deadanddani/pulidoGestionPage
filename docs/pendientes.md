@@ -24,5 +24,16 @@ Hoy el formulario solo valida en el navegador y muestra un aviso de demostració
 ## Técnico
 
 - Dominio propio y migración DNS (ver `despliegue.md`).
+- Poner `indexable: true` en `src/data/site.ts` (hoy la demo lleva `noindex`).
 - Sitemap automático (`@astrojs/sitemap`) al pasar a dominio propio.
 - Logo en SVG vectorial (hoy son recortes PNG de la cabecera original).
+
+## Revisión final (mejoras menores aplazadas)
+
+- Campos numéricos: en Firefox "12a" se envía vacío sin aviso → comprobar `input.validity.badInput`.
+- Al pulsar un vídeo con teclado el foco vuelve al inicio → `iframe.focus()` tras sustituir el botón.
+- `transformLegalHtml` no escapa `href`/`id` (entrada fija y revisada; riesgo bajo).
+- `deploy.yml` no ejecuta los tests antes de publicar y ambas ramas publican en el mismo sitio.
+- Las redirecciones de URLs antiguas no conservan la query string (`?utm_…`).
+- Las miniaturas de vídeo se cargan desde `i.ytimg.com` antes del consentimiento (sin cookies); autoalojarlas sería más estricto.
+- Al pasar a dominio propio: poner `indexable: true` en `src/data/site.ts`.

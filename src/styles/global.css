@@ -13,6 +13,7 @@ body {
   background: var(--color-bg);
   overflow-wrap: anywhere;
 }
+[id] { scroll-margin-top: 110px; }
 img, svg, video, iframe { max-width: 100%; display: block; }
 img { height: auto; }
 h1, h2, h3 { font-family: var(--font-serif); line-height: 1.15; margin: 0 0 var(--space-4); font-weight: 600; }
@@ -22,7 +23,7 @@ h3 { font-size: var(--text-lg); }
 p { margin: 0 0 var(--space-4); }
 a { color: var(--color-primary); text-underline-offset: 3px; }
 a:hover { color: var(--color-primary-strong); }
-:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; border-radius: 4px; }
 
 .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 .section { padding-block: var(--space-8); }
@@ -57,5 +58,4 @@ a:hover { color: var(--color-primary-strong); }
 .legal h2 { margin-top: var(--space-7); padding-bottom: var(--space-3); border-bottom: 2px solid var(--color-primary); }
 .legal h2:first-child { margin-top: 0; }
 .legal h3 { margin-top: var(--space-6); color: var(--color-primary); }
-.legal h2[id] { scroll-margin-top: 110px; }
 .legal ul, .legal ol { padding-left: var(--space-5); }

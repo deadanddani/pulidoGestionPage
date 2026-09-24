@@ -3,7 +3,12 @@ import { expect, test } from '@playwright/test';
 test('privacy page renders legal text with presup anchor', async ({ page }) => {
   await page.goto('privacidad/#presup');
   await expect(page.locator('main h2').first()).toBeVisible();
-  await expect(page.locator('#presup')).toBeInViewport();
+  // Las fuentes web cambian la altura del texto al cargar: el navegador reajusta el scroll al ancla después.
+  await page.evaluate(() => document.fonts.ready);
+  await expect.poll(async () => page.locator('#presup').evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return r.top >= 0 && r.bottom <= innerHeight;
+  }), { timeout: 5_000 }).toBe(true);
   await expect(page.locator('main')).toContainText('B82302365');
 });
 
