@@ -1,7 +1,8 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
 import { url } from '../lib/url';
 
-interface Field { id: string; label: string; type: string; required?: boolean; placeholder?: string; autocomplete?: string; inputmode?: 'numeric' | 'tel' | 'email' | 'text'; wide?: boolean }
+interface Field { id: string; label: string; type: HTMLAttributes<'input'>['type']; required?: boolean; placeholder?: string; autocomplete?: string; inputmode?: 'numeric' | 'tel' | 'email' | 'text'; wide?: boolean }
 
 const contact: Field[] = [
   { id: 'nombre', label: 'Nombre y apellidos', type: 'text', required: true, placeholder: 'Nombre y apellidos', autocomplete: 'name', wide: true },
