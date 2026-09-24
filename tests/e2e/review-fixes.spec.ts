@@ -27,6 +27,8 @@ test('proof-of-concept pages are not indexable by search engines', async ({ page
   for (const path of ['', 'equipo/', 'presupuesto/', 'privacidad/']) {
     await page.goto(path);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    // Una canonical hacia github.io contradiría el noindex y señalaría la demo como página original.
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
   }
 });
 

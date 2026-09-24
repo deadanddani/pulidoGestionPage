@@ -20,7 +20,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {!site.indexable && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="canonical" href={canonical} />
+    {site.indexable && <link rel="canonical" href={canonical} />}
     <link rel="icon" href={url('favicon.ico')} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_ES" />
