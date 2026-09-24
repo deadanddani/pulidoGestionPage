@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+---
+<BaseLayout title="Solicitud de Presupuesto" current="presupuesto/" description="Solicite presupuesto para la administración de su comunidad de propietarios.">
+  <section class="section container quote">
+    <h1 class="section__title">Solicitud de Presupuesto</h1>
+    <p class="section__lead">Envíenos sus datos y nos pondremos en contacto con usted.</p>
+    <QuoteForm />
+  </section>
+</BaseLayout>
+
+<style>
+  .quote { max-width: 880px; }
+</style>

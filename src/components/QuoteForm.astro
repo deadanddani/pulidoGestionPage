@@ -1,0 +1,140 @@
+---
+import { url } from '../lib/url';
+
+interface Field { id: string; label: string; type: string; required?: boolean; placeholder?: string; autocomplete?: string; inputmode?: 'numeric' | 'tel' | 'email' | 'text'; wide?: boolean }
+
+const contact: Field[] = [
+  { id: 'nombre', label: 'Nombre y apellidos', type: 'text', required: true, placeholder: 'Nombre y apellidos', autocomplete: 'name', wide: true },
+  { id: 'direccion', label: 'Dirección de la finca', type: 'text', required: true, placeholder: 'Dirección de la finca', autocomplete: 'street-address', wide: true },
+  { id: 'codigoPostal', label: 'Código postal', type: 'text', required: true, placeholder: '28804', autocomplete: 'postal-code', inputmode: 'numeric' },
+  { id: 'telefono', label: 'Teléfonos de contacto', type: 'tel', required: true, placeholder: '600 000 000', autocomplete: 'tel', inputmode: 'tel' },
+  { id: 'email', label: 'Email de contacto', type: 'email', required: true, placeholder: 'ejemplo@correo.com', autocomplete: 'email', inputmode: 'email', wide: true },
+];
+const counts: Field[] = [
+  { id: 'viviendas', label: 'Nº viviendas', type: 'number' },
+  { id: 'locales', label: 'Nº locales', type: 'number' },
+  { id: 'naves', label: 'Nº naves', type: 'number' },
+  { id: 'garajes', label: 'Nº plazas de garaje', type: 'number' },
+];
+---
+<form id="quote-form" class="quote-form" novalidate data-demo>
+  <fieldset>
+    <legend>Datos de contacto</legend>
+    <div class="quote-form__grid">
+      {contact.map((f) => (
+        <div class:list={['field', { 'field--wide': f.wide }]}>
+          <label for={f.id}>{f.label}{f.required && <span aria-hidden="true"> *</span>}</label>
+          <input id={f.id} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder}
+            autocomplete={f.autocomplete} inputmode={f.inputmode} aria-describedby={`${f.id}-error`} />
+          <p class="field__error" id={`${f.id}-error`}></p>
+        </div>
+      ))}
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Datos de la finca</legend>
+    <div class="quote-form__grid quote-form__grid--counts">
+      {counts.map((f) => (
+        <div class="field">
+          <label for={f.id}>{f.label}</label>
+          <input id={f.id} name={f.id} type="number" min="0" step="1" inputmode="numeric" aria-describedby={`${f.id}-error`} />
+          <p class="field__error" id={`${f.id}-error`}></p>
+        </div>
+      ))}
+    </div>
+  </fieldset>
+  <div class="field field--check">
+    <input type="checkbox" id="privacidad" name="privacidad" value="1" required aria-describedby="privacidad-error" />
+    <label for="privacidad">Acepto la <a href={url('privacidad/#presup')} target="_blank">política de privacidad</a> del sitio. <span aria-hidden="true">*</span></label>
+    <p class="field__error" id="privacidad-error"></p>
+  </div>
+  <div class="quote-form__actions">
+    <button type="submit" class="btn btn--primary">Enviar</button>
+    <button type="reset" class="btn btn--ghost">Borrar formulario</button>
+  </div>
+  <div class="form-status" role="status" aria-live="polite"></div>
+</form>
+
+<script>
+  import { validateQuote, type QuoteData, type QuoteField } from '../lib/quote-form';
+
+  const form = document.getElementById('quote-form') as HTMLFormElement | null;
+  const status = form?.querySelector<HTMLElement>('.form-status');
+  const FIELDS: QuoteField[] = ['nombre', 'direccion', 'codigoPostal', 'telefono', 'email', 'viviendas', 'locales', 'naves', 'garajes', 'privacidad'];
+
+  function clearErrors() {
+    for (const f of FIELDS) {
+      document.getElementById(f)?.removeAttribute('aria-invalid');
+      const err = document.getElementById(`${f}-error`);
+      if (err) err.textContent = '';
+    }
+    if (status) { status.textContent = ''; status.className = 'form-status'; }
+  }
+
+  function readForm(f: HTMLFormElement): QuoteData {
+    const val = (name: string) => (f.elements.namedItem(name) as HTMLInputElement).value;
+    return {
+      nombre: val('nombre'), direccion: val('direccion'), codigoPostal: val('codigoPostal'),
+      telefono: val('telefono'), email: val('email'), viviendas: val('viviendas'), locales: val('locales'),
+      naves: val('naves'), garajes: val('garajes'),
+      privacidad: (f.elements.namedItem('privacidad') as HTMLInputElement).checked,
+    };
+  }
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    clearErrors();
+    const errors = validateQuote(readForm(form));
+    const invalid = FIELDS.filter((f) => errors[f]);
+    for (const f of invalid) {
+      document.getElementById(f)?.setAttribute('aria-invalid', 'true');
+      const err = document.getElementById(`${f}-error`);
+      if (err) err.textContent = errors[f] ?? '';
+    }
+    if (invalid.length) {
+      document.getElementById(invalid[0])?.focus();
+      return;
+    }
+    if (form.hasAttribute('data-demo') && status) {
+      status.textContent = 'Formulario de demostración: aún no se envían datos. En la versión final su solicitud llegará a fincas@pulidogestion.com.';
+      status.className = 'form-status form-status--ok';
+      return;
+    }
+    form.submit();
+  });
+
+  form?.addEventListener('reset', () => clearErrors());
+</script>
+
+<style>
+  .quote-form { background: var(--color-surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(var(--space-4), 4vw, var(--space-7)); }
+  fieldset { border: 0; padding: 0; margin: 0 0 var(--space-6); min-width: 0; }
+  legend { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-4); }
+  .quote-form__grid { display: grid; gap: var(--space-4); }
+  .field { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  label { font-weight: 600; font-size: var(--text-sm); }
+  input:not([type='checkbox']) {
+    min-height: 48px; padding: var(--space-3) var(--space-4); width: 100%;
+    font: inherit; color: inherit; background: var(--color-bg);
+    border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  }
+  input:focus-visible { border-color: var(--color-primary); }
+  input[aria-invalid='true'] { border-color: var(--color-danger); background: #fff5f4; }
+  .field__error { color: var(--color-danger); font-size: var(--text-sm); margin: 0; min-height: 0; }
+  .field__error:empty { display: none; }
+  .field--check { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .field--check input { width: 24px; height: 24px; margin: 2px 0 0; accent-color: var(--color-primary); }
+  .field--check .field__error { grid-column: 1 / -1; }
+  .quote-form__actions { display: flex; flex-direction: column; gap: var(--space-3); }
+  .form-status:empty { display: none; }
+  .form-status { margin-top: var(--space-4); padding: var(--space-4); border-radius: var(--radius-sm); }
+  .form-status--ok { background: #e8f6ef; color: var(--color-success); font-weight: 600; }
+  @media (min-width: 640px) {
+    .quote-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .field--wide { grid-column: 1 / -1; }
+    .quote-form__actions { flex-direction: row; }
+  }
+  @media (min-width: 960px) {
+    .quote-form__grid--counts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>
