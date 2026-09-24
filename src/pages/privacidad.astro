@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import content from '../content/legal/privacidad.html?raw';
+---
+<BaseLayout title="Política de Protección de Datos y Privacidad">
+  <article class="section container legal" set:html={content} />
+</BaseLayout>

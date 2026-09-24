@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import content from '../content/legal/cookies.html?raw';
+---
+<BaseLayout title="Política de Cookies">
+  <article class="section container legal" set:html={content} />
+</BaseLayout>

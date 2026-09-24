@@ -1,0 +1,65 @@
+---
+import { site } from '../data/site';
+import { url } from '../lib/url';
+---
+<div class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden data-analytics-id={site.analyticsId}>
+  <p>Esta página utiliza cookies de análisis para mejorar su experiencia de navegación. <a href={url('cookies/')}>Más información</a></p>
+  <div class="cookie-banner__actions">
+    <button type="button" class="btn btn--ghost" data-consent="rejected">Rechazar</button>
+    <button type="button" class="btn btn--primary" data-consent="accepted">Aceptar</button>
+  </div>
+</div>
+
+<script>
+  const KEY = 'pg-cookie-consent';
+  const banner = document.querySelector<HTMLElement>('.cookie-banner');
+
+  const read = (): string | null => { try { return localStorage.getItem(KEY); } catch { return null; } };
+  const write = (v: string | null) => { try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch { /* sin almacenamiento */ } };
+
+  function loadAnalytics(id: string) {
+    if (document.getElementById('ga-script')) return;
+    const s = document.createElement('script');
+    s.id = 'ga-script';
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(s);
+    const w = window as unknown as { dataLayer: unknown[]; gtag: (...a: unknown[]) => void };
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function gtag() { w.dataLayer.push(arguments); };
+    w.gtag('js', new Date());
+    w.gtag('config', id, { anonymize_ip: true });
+  }
+
+  if (banner) {
+    const id = banner.dataset.analyticsId!;
+    const consent = read();
+    if (consent === 'accepted') loadAnalytics(id);
+    else if (consent !== 'rejected') banner.hidden = false;
+
+    banner.addEventListener('click', (e) => {
+      const choice = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-consent]')?.dataset.consent;
+      if (!choice) return;
+      write(choice);
+      banner.hidden = true;
+      if (choice === 'accepted') loadAnalytics(id);
+    });
+
+    document.querySelectorAll('[data-cookie-settings]').forEach((el) =>
+      el.addEventListener('click', () => { write(null); banner.hidden = false; }),
+    );
+  }
+</script>
+
+<style>
+  .cookie-banner {
+    position: fixed; inset: auto var(--space-3) var(--space-3); z-index: 50;
+    max-width: 640px; margin-inline: auto;
+    display: grid; gap: var(--space-3); padding: var(--space-5);
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-banner p { margin: 0; font-size: var(--text-sm); }
+  .cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: flex-end; }
+  .cookie-banner__actions .btn { flex: 1 1 120px; }
+</style>

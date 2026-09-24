@@ -52,3 +52,10 @@ a:hover { color: var(--color-primary-strong); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+.legal { max-width: 80ch; }
+.legal h2 { margin-top: var(--space-7); padding-bottom: var(--space-3); border-bottom: 2px solid var(--color-primary); }
+.legal h2:first-child { margin-top: 0; }
+.legal h3 { margin-top: var(--space-6); color: var(--color-primary); }
+.legal h2[id] { scroll-margin-top: 110px; }
+.legal ul, .legal ol { padding-left: var(--space-5); }
