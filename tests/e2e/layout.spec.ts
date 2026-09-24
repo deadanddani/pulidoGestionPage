@@ -36,3 +36,13 @@ test('logo links to home', async ({ page }) => {
   await page.goto('./');
   await expect(page.getByRole('link', { name: /Pulido Gestión de Fincas/ }).first()).toHaveAttribute('href', '/pulidoGestionPage/');
 });
+
+test('header wordmark "Pulido Gestión de Fincas" is legible on mobile and desktop', async ({ page }) => {
+  for (const [width, minHeight] of [[375, 18], [1440, 24]] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('./');
+    const text = page.locator('.site-header__brand img[src$="logo-text.png"]');
+    await expect(text).toBeVisible();
+    expect((await text.boundingBox())!.height).toBeGreaterThanOrEqual(minHeight);
+  }
+});

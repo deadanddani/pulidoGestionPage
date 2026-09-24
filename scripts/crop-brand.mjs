@@ -13,9 +13,19 @@ const crops = [
   { src: 'cabecera_comunidad.png', dest: 'subvencion-fse.png', region: { left: 740, top: 0, width: 500, height: 310 } },
 ];
 
-for (const { src, dest, region } of crops) {
+// El logo es alto (símbolo encima del texto): para la cabecera se separan símbolo y texto y se colocan en línea.
+// Regiones relativas a logo.png ya recortado (225x243).
+const logoParts = [
+  { dest: 'logo-mark.png', region: { left: 0, top: 0, width: 225, height: 196 } },
+  { dest: 'logo-text.png', region: { left: 0, top: 196, width: 225, height: 47 } },
+];
+
+async function crop(input, region, dest) {
   // extract y trim en pipelines separados: sharp aplica trim antes que extract si se encadenan.
-  const cropped = await sharp(`${cache}/${src}`).extract(region).png().toBuffer();
+  const cropped = await sharp(input).extract(region).png().toBuffer();
   const info = await sharp(cropped).trim({ threshold: 10 }).png().toFile(`${out}/${dest}`);
   console.log(`${dest}: ${info.width}x${info.height}`);
 }
+
+for (const { src, dest, region } of crops) await crop(`${cache}/${src}`, region, dest);
+for (const { dest, region } of logoParts) await crop(`${out}/logo.png`, region, dest);
