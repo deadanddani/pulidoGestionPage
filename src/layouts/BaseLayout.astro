@@ -16,7 +16,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {!site.indexable && <meta name="robots" content="noindex, nofollow" />}
@@ -27,7 +28,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(url('img/logo.png'), Astro.site)} />
-    <meta name="theme-color" content="#0055ff" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://i.ytimg.com" />
   </head>
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -39,6 +41,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <style is:global>
-  .skip-link { position: absolute; left: var(--space-4); top: -100px; z-index: 100; background: var(--color-primary); color: #fff; padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); }
+  .skip-link { position: absolute; left: var(--space-4); top: -100px; z-index: var(--z-skip); background: var(--color-primary); color: #fff; padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); font-weight: 600; }
   .skip-link:focus { top: var(--space-4); }
 </style>
