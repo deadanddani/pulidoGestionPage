@@ -11,13 +11,14 @@ import { url } from '../lib/url';
 
 <style>
   .subsidy {
-    display: grid; gap: var(--space-4); align-items: center;
-    padding: var(--space-5); background: #fff; color: var(--color-text);
+    display: grid; gap: var(--space-5); align-items: center;
+    padding: var(--space-5); background: var(--color-bg); color: var(--color-text);
     border-radius: var(--radius); border: 1px solid var(--color-border);
   }
-  .subsidy img { width: 100%; max-width: 420px; margin-inline: auto; }
+  .subsidy img { width: 100%; max-width: 400px; margin-inline: auto; background: #fff; border-radius: var(--radius-sm); padding: var(--space-2); }
   .subsidy__text p { margin: 0 0 var(--space-2); font-size: var(--text-sm); color: var(--color-muted); }
+  .subsidy__text p:last-child { margin-bottom: 0; }
   @media (min-width: 960px) {
-    .subsidy { grid-template-columns: minmax(0, 420px) 1fr; }
+    .subsidy { grid-template-columns: minmax(0, 400px) 1fr; gap: var(--space-6); }
   }
 </style>
