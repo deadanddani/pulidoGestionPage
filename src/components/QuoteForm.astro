@@ -5,11 +5,11 @@ import { url } from '../lib/url';
 interface Field { id: string; label: string; type: HTMLAttributes<'input'>['type']; required?: boolean; placeholder?: string; autocomplete?: string; inputmode?: 'numeric' | 'tel' | 'email' | 'text'; wide?: boolean }
 
 const contact: Field[] = [
-  { id: 'nombre', label: 'Nombre y apellidos', type: 'text', required: true, placeholder: 'Nombre y apellidos', autocomplete: 'name', wide: true },
-  { id: 'direccion', label: 'Dirección de la finca', type: 'text', required: true, placeholder: 'Dirección de la finca', autocomplete: 'street-address', wide: true },
-  { id: 'codigoPostal', label: 'Código postal', type: 'text', required: true, placeholder: '28804', autocomplete: 'postal-code', inputmode: 'numeric' },
-  { id: 'telefono', label: 'Teléfonos de contacto', type: 'tel', required: true, placeholder: '600 000 000', autocomplete: 'tel', inputmode: 'tel' },
-  { id: 'email', label: 'Email de contacto', type: 'email', required: true, placeholder: 'ejemplo@correo.com', autocomplete: 'email', inputmode: 'email', wide: true },
+  { id: 'nombre', label: 'Nombre y apellidos', type: 'text', required: true, autocomplete: 'name', wide: true },
+  { id: 'direccion', label: 'Dirección de la finca', type: 'text', required: true, autocomplete: 'street-address', wide: true },
+  { id: 'codigoPostal', label: 'Código postal', type: 'text', required: true, placeholder: 'p. ej. 28804…', autocomplete: 'postal-code', inputmode: 'numeric' },
+  { id: 'telefono', label: 'Teléfonos de contacto', type: 'tel', required: true, placeholder: 'p. ej. 600 000 000…', autocomplete: 'tel', inputmode: 'tel' },
+  { id: 'email', label: 'Email de contacto', type: 'email', required: true, placeholder: 'p. ej. nombre@correo.com…', autocomplete: 'email', inputmode: 'email', wide: true },
 ];
 const counts: Field[] = [
   { id: 'viviendas', label: 'Nº viviendas', type: 'number' },
@@ -26,7 +26,7 @@ const counts: Field[] = [
         <div class:list={['field', { 'field--wide': f.wide }]}>
           <label for={f.id}>{f.label}{f.required && <span aria-hidden="true"> *</span>}</label>
           <input id={f.id} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder}
-            autocomplete={f.autocomplete} inputmode={f.inputmode} aria-describedby={`${f.id}-error`} />
+            autocomplete={f.autocomplete} inputmode={f.inputmode} spellcheck={f.type === 'email' ? 'false' : undefined} aria-describedby={`${f.id}-error`} />
           <p class="field__error" id={`${f.id}-error`}></p>
         </div>
       ))}
@@ -113,36 +113,47 @@ const counts: Field[] = [
 </script>
 
 <style>
-  .quote-form { background: var(--color-surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(var(--space-4), 4vw, var(--space-7)); }
+  .quote-form {
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius);
+    padding: clamp(var(--space-5), 4vw, var(--space-7)); min-width: 0;
+  }
   fieldset { border: 0; padding: 0; margin: 0 0 var(--space-6); min-width: 0; }
-  legend { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-4); }
+  fieldset + fieldset { padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+  legend { float: left; width: 100%; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; letter-spacing: -0.015em; margin-bottom: var(--space-4); }
+  legend + * { clear: both; }
   .quote-form__grid { display: grid; gap: var(--space-4); }
-  .field { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
   label { font-weight: 600; font-size: var(--text-sm); }
   input:not([type='checkbox']) {
     min-height: 48px; padding: var(--space-3) var(--space-4); width: 100%;
-    font: inherit; color: inherit; background: var(--color-bg);
-    border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+    font: inherit; font-size: max(16px, var(--text-base)); color: inherit; background: var(--color-bg);
+    border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
+    transition: border-color .2s var(--ease), background-color .2s var(--ease), box-shadow .2s var(--ease);
   }
-  input:focus-visible { border-color: var(--color-primary); }
-  input[aria-invalid='true'] { border-color: var(--color-danger); background: #fff5f4; }
-  .field__error { color: var(--color-danger); font-size: var(--text-sm); margin: 0; min-height: 0; }
+  input::placeholder { color: #6b7790; }
+  input:not([type='checkbox']):hover { border-color: var(--color-muted); }
+  input:not([type='checkbox']):focus { background: var(--color-surface); }
+  input:focus-visible { border-color: var(--color-primary); outline: none; box-shadow: 0 0 0 3px rgb(0 85 255 / 25%), 0 0 0 1px var(--color-primary); }
+  input[aria-invalid='true'] { border-color: var(--color-danger); background: var(--color-danger-soft); }
+  input[type='number'] { font-variant-numeric: tabular-nums; }
+  .field__error { color: var(--color-danger); font-size: var(--text-sm); font-weight: 600; margin: 0; }
   .field__error:empty { display: none; }
-  .field--check { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: var(--space-3); margin-bottom: var(--space-5); }
-  .field--check input { width: 24px; height: 24px; margin: 2px 0 0; accent-color: var(--color-primary); }
+  .field--check { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 0; margin-bottom: var(--space-5); padding: var(--space-4); background: var(--color-surface-alt); border-radius: var(--radius-sm); }
+  .field--check input { width: 24px; height: 24px; margin: 0; accent-color: var(--color-primary); cursor: pointer; }
+  .field--check label { padding-left: var(--space-3); font-weight: 400; font-size: var(--text-base); cursor: pointer; }
   .field--check .field__error { grid-column: 1 / -1; }
   .quote-form__actions { display: flex; flex-direction: column; gap: var(--space-3); }
   .form-status:empty { display: none; }
   .form-status { margin-top: var(--space-4); padding: var(--space-4); border-radius: var(--radius-sm); }
   .form-noscript { margin: var(--space-4) 0 0; color: var(--color-danger); font-weight: 600; }
   .quote-form button:disabled { opacity: .5; cursor: not-allowed; }
-  .form-status--ok { background: #e8f6ef; color: var(--color-success); font-weight: 600; }
+  .form-status--ok { background: var(--color-success-soft); color: var(--color-success); font-weight: 600; border: 1px solid rgb(17 115 74 / 25%); }
   @media (min-width: 640px) {
     .quote-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .field--wide { grid-column: 1 / -1; }
     .quote-form__actions { flex-direction: row; }
   }
-  @media (min-width: 960px) {
+  @media (min-width: 1200px) {
     .quote-form__grid--counts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
 </style>

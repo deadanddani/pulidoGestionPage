@@ -1,17 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
 import VideoEmbed from '../components/VideoEmbed.astro';
 import { videos } from '../data/videos';
 ---
 <BaseLayout title="Área Multimedia" current="multimedia/">
-  <section class="section container">
-    <h1 class="section__title">Área Multimedia</h1>
-    <div class="grid-cards grid-cards--videos">
-      {videos.map((video, i) => <VideoEmbed video={video} eager={i < 2} />)}
+  <PageHead title="Área Multimedia" lead="Ponencias, entrevistas y propuestas en vídeo." />
+  <section class="section container" aria-label="Vídeos">
+    <div class="grid-cards video-grid">
+      {videos.map((video, i) => <VideoEmbed video={video} eager={i < 2} showYear />)}
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .grid-cards--videos { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .video-grid { grid-template-columns: 1fr; gap: var(--space-6) var(--space-5); }
+  @media (min-width: 640px) { .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1200px) { .video-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 </style>

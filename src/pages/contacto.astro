@@ -1,21 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
 ---
 <BaseLayout title="Dónde Estamos" current="contacto/">
-  <section class="section container">
-    <h1 class="section__title">Dónde estamos</h1>
+  <PageHead title="Dónde estamos" />
+  <section class="section container" aria-label="Ubicación">
     <div class="location">
       <a class="location__map" href={site.mapsUrl} target="_blank" rel="noopener external">
         <img src={url('img/mapa.png')} alt={`Mapa de ubicación: ${site.address.street}, ${site.address.city}`} width="778" height="442" />
-        <span class="location__hint">Abrir en Google Maps ↗</span>
+        <span class="location__hint">Abrir en Google Maps <Icon name="arrow-up-right" size={14} /></span>
       </a>
       <address class="location__card">
-        <h2>{site.legalName}</h2>
-        <p>{site.address.street}<br />{site.address.postalCode} {site.address.city}<br />({site.address.region})</p>
-        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
-        <a class="btn btn--primary" href={site.mapsUrl} target="_blank" rel="noopener external">Cómo llegar</a>
+        <h2 translate="no">{site.legalName}</h2>
+        <p class="location__row">
+          <Icon name="map-pin" class="location__icon" />
+          <span>{site.address.street}<br />{site.address.postalCode} {site.address.city}<br />({site.address.region})</span>
+        </p>
+        <p class="location__row">
+          <Icon name="envelope-simple" class="location__icon" />
+          <a href={`mailto:${site.email}`} translate="no">{site.email}</a>
+        </p>
+        <a class="btn btn--primary" href={site.mapsUrl} target="_blank" rel="noopener external">
+          Cómo llegar <Icon name="arrow-up-right" size={16} />
+        </a>
       </address>
     </div>
   </section>
@@ -23,9 +33,28 @@ import { url } from '../lib/url';
 
 <style>
   .location { display: grid; gap: var(--space-5); }
-  .location__map { position: relative; display: block; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-  .location__map img { width: 100%; }
-  .location__hint { position: absolute; right: var(--space-3); bottom: var(--space-3); background: #fff; padding: var(--space-2) var(--space-3); border-radius: 999px; font-weight: 600; font-size: var(--text-sm); }
-  .location__card { font-style: normal; background: var(--color-surface); border-radius: var(--radius); padding: var(--space-6); box-shadow: var(--shadow); }
-  @media (min-width: 960px) { .location { grid-template-columns: 1.6fr 1fr; align-items: center; } }
+  .location__map {
+    position: relative; display: block; overflow: hidden;
+    border-radius: var(--radius); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);
+  }
+  .location__map img { width: 100%; aspect-ratio: 778 / 442; object-fit: cover; transition: transform .4s var(--ease); }
+  .location__map:hover img { transform: scale(1.02); }
+  .location__hint {
+    position: absolute; right: var(--space-3); bottom: var(--space-3);
+    display: inline-flex; align-items: center; gap: var(--space-1);
+    background: var(--color-surface); color: var(--color-primary-ink); box-shadow: var(--shadow);
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-weight: 600; font-size: var(--text-sm);
+  }
+  .location__card {
+    font-style: normal; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius); padding: clamp(var(--space-5), 3vw, var(--space-6));
+  }
+  .location__card h2 { font-size: var(--text-lg); margin-bottom: var(--space-5); }
+  .location__row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+  .location__row :global(.location__icon) { margin-top: 3px; color: var(--color-primary); }
+  .location__card .btn { margin-top: var(--space-2); width: 100%; }
+  @media (min-width: 960px) {
+    .location { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: stretch; }
+    .location__card { display: flex; flex-direction: column; justify-content: center; }
+  }
 </style>

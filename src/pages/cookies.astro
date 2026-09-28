@@ -1,7 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import content from '../content/legal/cookies.html?raw';
+import PageHead from '../components/PageHead.astro';
+import raw from '../content/legal/cookies.html?raw';
+
+// El texto importado abre con un <h2> igual al título de la página, que ya es el <h1>.
+const content = raw.replace(/^<h2>Política de Cookies<\/h2>/, '');
 ---
 <BaseLayout title="Política de Cookies">
+  <PageHead title="Política de Cookies" />
   <article class="section container legal" set:html={content} />
 </BaseLayout>

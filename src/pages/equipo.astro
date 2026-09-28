@@ -1,13 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
 import TeamCard from '../components/TeamCard.astro';
 import { team } from '../data/team';
 ---
 <BaseLayout title="Nuestro Equipo" current="equipo/">
-  <section class="section container">
-    <h1 class="section__title">Nuestro Equipo</h1>
-    <div class="grid-cards">
+  <PageHead title="Nuestro Equipo" />
+  <section class="section container" aria-label="Miembros del equipo">
+    <div class="grid-cards team-grid">
       {team.map((member) => <TeamCard member={member} />)}
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .team-grid { grid-template-columns: 1fr; gap: var(--space-3); }
+  @media (min-width: 640px) { .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); } }
+  @media (min-width: 960px) { .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1200px) { .team-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+</style>
