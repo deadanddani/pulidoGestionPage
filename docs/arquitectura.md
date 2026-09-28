@@ -52,6 +52,12 @@ tests/e2e/                     # Playwright
 
 - Mobile-first: estilos base para móvil; `min-width` en 640px, 960px y 1200px.
 - Tokens de diseño en `src/styles/tokens.css`; tipografía fluida con `clamp()`.
+- Sistema visual: base "Corporate" de typeui.sh (rejilla de 8 pt, radios 4/8/12 px) adaptada a la marca:
+  un único acento (`#0055FF`), neutros fríos, Plus Jakarta Sans para titulares y Source Sans 3 para texto.
+  Iconos de Phosphor (variante *bold*) vía `src/components/Icon.astro`.
+- Skills de diseño instaladas en `.claude/skills/` (`design-taste-frontend`, `redesign-existing-projects`,
+  `design-system`); se reinstalan con `npx skills add https://github.com/Leonxlnx/taste-skill` y
+  `npx typeui.sh pull corporate -f skill -p claude-code`.
 - Rejillas con `auto-fit/minmax` (1 → 2 → 3 columnas), objetivos táctiles ≥ 44px, `overflow-wrap: anywhere` para
   textos largos (URLs, emails).
 - Verificación: `tests/e2e/responsive.spec.ts` comprueba que no hay scroll horizontal en todas las páginas a 320, 375,
